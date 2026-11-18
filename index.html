@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golver | Gold & Silver Intelligence Hub</title>
+    <!-- Google Fonts for Typography Hierarchy -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-primary: #0B0C10;
+            --bg-secondary: #12141C;
+            --bg-card: rgba(26, 29, 39, 0.75);
+            --gold-primary: #D4AF37;
+            --gold-light: #F3E5AB;
+            --silver-primary: #C5CBD3;
+            --silver-light: #E8ECEF;
+            --text-main: #E2E8F0;
+            --text-muted: #94A3B8;
+            --border-color: rgba(212, 175, 55, 0.2);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(197, 203, 211, 0.05) 0%, transparent 40%);
+        }
+
+        h1, h2, h3, .brand-title {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 0.05em;
+        }
+
+        /* Layout & Navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background: rgba(11, 12, 16, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            text-decoration: none;
+        }
+
+        .logo i {
+            color: var(--silver-primary);
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        nav a:hover {
+            color: var(--gold-light);
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 5rem 5% 3rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 50%, var(--silver-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            line-height: 1.6;
+        }
+
+        /* Main Container & Grid */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 5% 5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Glassmorphism Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2.5rem;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            border-color: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.1);
+        }
+
+        .card h2 {
+            font-size: 1.75rem;
+            color: var(--gold-light);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card h2 i {
+            font-size: 1.4rem;
+            color: var(--gold-primary);
+        }
+
+        /* AI Scanner Module */
+        .scanner-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        #webcam-container {
+            width: 100%;
+            max-height: 320px;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid var(--border-color);
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #webcam-container canvas {
+            width: 100% !important;
+            height: auto !important;
+            object-fit: cover;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--gold-primary), #AA820A);
+            color: #0B0C10;
+            border: none;
+            padding: 0.85rem 2rem;
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+            background: linear-gradient(135deg, var(--gold-light), var(--gold-primary));
+        }
+
+        #label-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .prediction-bar-wrapper {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .prediction-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95rem;
+            margin-bottom: 0.4rem;
+            font-weight: 500;
+        }
+
+        .progress-track {
+            background: rgba(255, 255, 255, 0.1);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold-primary), var(--silver-primary));
+            width: 0%;
+            transition: width 0.2s ease;
+        }
+
+        /* Community Significance Section */
+        .community-content {
+            color: var(--text-muted);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        .community-content p {
+            margin-bottom: 1.2rem;
+        }
+
+        .impact-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        .metric-box {
+            background: rgba(212, 175, 55, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 1.25rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .metric-box h3 {
+            font-size: 1.8rem;
+            color: var(--gold-light);
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-box span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2.5rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            background: var(--bg-secondary);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo">
+            <i class="fa-solid fa-gem"></i> GOLVER
+        </a>
+        <nav>
+            <ul>
+                <li><a href="#scanner">Classifier</a></li>
+                <li><a href="#community">Significance</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Precious Metals AI Intelligence</h1>
+        <p>A sophisticated web platform combining computer vision with precious metal identification, designed to verify and analyze gold and silver assets with supreme accuracy.</p>
+    </section>
+
+    <main class="container">
+        <!-- AI Classifier Card -->
+        <section id="scanner" class="card">
+            <h2><i class="fa-solid fa-camera-retro"></i> Live Model Classifier</h2>
+            <div class="scanner-box">
+                <button class="btn" type="button" onclick="init()"><i class="fa-solid fa-play"></i> Start Vision Stream</button>
+                <div id="webcam-container">
+                    <span style="color: var(--text-muted); padding: 3rem; text-align: center;">Click start to initialize live feed</span>
+                </div>
+                <div id="label-container"></div>
+            </div>
+        </section>
+
+        <!-- Community Significance Card -->
+        <section id="community" class="card">
+            <h2><i class="fa-solid fa-globe"></i> Community Significance</h2>
+            <div class="community-content">
+                <p><strong>Democratizing Asset Authentication:</strong> In local communities and developing regional economies, access to professional metallurgical assaying equipment is rare and expensive. Golver bridges this gap by leveraging edge AI to provide instantaneous, accessible classification indicators for precious metals.</p>
+                <p><strong>Preventing Fraud:</strong> Counterfeit bullion and jewelry pose significant financial risks to everyday consumers and small-scale traders. Providing a transparent, browser-based computer vision tool empowers community members to conduct rapid preliminary checks.</p>
+                
+                <div class="impact-metrics">
+                    <div class="metric-box">
+                        <h3>100%</h3>
+                        <span>Web-Accessible</span>
+                    </div>
+                    <div class="metric-box">
+                        <h3>Real-Time</h3>
+                        <span>Vision Inference</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Golver. Hosted on GitHub Pages. Powered by Google Teachable Machine.</p>
+    </footer>
+
+    <!-- TensorFlow.js & Teachable Machine Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    
+    <script>
+        const URL = "https://teachablemachine.withgoogle.com/models/qg4TeoCEl/";
+
+        let model, webcam, ctx, labelContainer, maxPredictions;
+
+        async function init() {
+            const modelURL = URL + "model.json";
+            const metadataURL = URL + "metadata.json";
+
+            try {
+                // Load model and metadata
+                model = await tmImage.load(modelURL, metadataURL);
+                maxPredictions = model.getTotalClasses();
+
+                // Setup webcam
+                const flip = true; // whether to flip the webcam
+                webcam = new tmImage.Webcam(400, 300, flip); // width, height, flip
+                await webcam.setup(); // request access to the webcam
+                await webcam.play();
+                window.requestAnimationFrame(loop);
+
+                // Append elements to DOM
+                const webcamContainer = document.getElementById("webcam-container");
+                webcamContainer.innerHTML = "";
+                webcamContainer.appendChild(webcam.canvas);
+
+                labelContainer = document.getElementById("label-container");
+                labelContainer.innerHTML = "";
+                for (let i = 0; i < maxPredictions; i++) {
+                    const wrapper = document.createElement("div");
+                    wrapper.className = "prediction-bar-wrapper";
+                    wrapper.innerHTML = `
+                        <div class="prediction-label">
+                            <span id="class-name-${i}">Class</span>
+                            <span id="class-val-${i}">0%</span>
+                        </div>
+                        <div class="progress-track">
+                            <div id="class-progress-${i}" class="progress-fill"></div>
+                        </div>
+                    `;
+                    labelContainer.appendChild(wrapper);
+                }
+            } catch (error) {
+                console.error("Error initializing Teachable Machine:", error);
+                alert("Could not access camera or load model. Please ensure camera permissions are allowed.");
+            }
+        }
+
+        async function loop() {
+            webcam.update(); // update the webcam frame
+            await predict();
+            window.requestAnimationFrame(loop);
+        }
+
+        async function predict() {
+            // Predict can take in an image, video or canvas html element
+            const prediction = await model.predict(webcam.canvas);
+            for (let i = 0; i < maxPredictions; i++) {
+                const className = prediction[i].className;
+                const probability = (prediction[i].probability * 100).toFixed(1);
+                
+                const nameEl = document.getElementById(`class-name-${i}`);
+                const valEl = document.getElementById(`class-val-${i}`);
+                const progressEl = document.getElementById(`class-progress-${i}`);
+
+                if (nameEl && valEl && progressEl) {
+                    nameEl.innerText = className;
+                    valEl.innerText = `${probability}%`;
+                    progressEl.style.width = `${probability}%`;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
